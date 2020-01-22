@@ -28,22 +28,39 @@ http.createServer(function (req, res){
 }).listen(8080);
 
 function addToDB(id,player,score){
-  console.log("add")
+  console.log("--------------add--------------")
   jsonFile.readFile(jsondb, function(err, data){
     console.log(data)
     console.log(data[id])
     if(data[id]){
-      console.log("yup")
-      console.log(player)
+      console.log("--------------yup--------------")
+      console.log(data[id])
+      for(i in data[id]){
+        console.log(i)
+        console.log(data[id][i])
+        console.log(Object.keys(data[id][i]).toString())
+        if(Object.keys(data[id][i]).toString() == player){
+          console.log("already here")
+          console.log(data[id][i][player])
+          if(data[id][i][player] < score){
+            console.log("plus grand")
+            data[id][i][player] = score
+            jsonFile.writeFile(jsondb, data, { spaces: 2 }, function (err) {
+        			if (err) console.error(err)
+        		})//c le boudel
+          }
+        }
+      }
+      //console.log(player)
       let playerObject = {}
       playerObject[player] = score
-      console.log(playerObject)
+      //console.log(playerObject)
       data[id].push(playerObject)
-      console.log(data[id])
-      //TODO : check if the player already has a score and change it if his new score is higher
+      //console.log(data[id])
+      /*
       jsonFile.writeFile(jsondb, data, { spaces: 2 }, function (err) {
   			if (err) console.error(err)
-  		})
+  		})*/
     }
     else{
       console.log("nup")
